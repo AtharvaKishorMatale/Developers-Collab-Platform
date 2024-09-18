@@ -2,8 +2,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
+import SignIn from './pages/Login';
 import SignUp from './pages/SignUp';
-import SignIn from './pages/signIn';
+
 
 import './App.css'
 
