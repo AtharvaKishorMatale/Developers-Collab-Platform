@@ -6,7 +6,7 @@ import SignIn from './pages/Login';
 import SignUp from './pages/SignUp';
 
 
-import './App.css'
+
 
 function App() {
 
