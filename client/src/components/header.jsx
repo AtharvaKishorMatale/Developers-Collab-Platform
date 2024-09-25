@@ -1,5 +1,7 @@
-import { Navbar, TextInput,  Avatar, Dropdown } from 'flowbite-react';
+import { Navbar, TextInput, Button, Avatar, Dropdown } from 'flowbite-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { toggleTheme } from '../redux/theme/themeSlice';
+import { FaMoon, FaSun } from 'react-icons/fa';
 
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,6 +11,7 @@ export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { theme } = useSelector((state) => state.theme);
   
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -46,7 +49,7 @@ export default function Header() {
           DevConnect
         </span>
       </Link>
-      <form onSubmit={handleSubmit} className='relative'>
+      <form onSubmit={handleSubmit} className='relative w-96'>
         <TextInput
           type='text'
           placeholder='Search...'
@@ -66,7 +69,7 @@ export default function Header() {
                 img={currentUser.profilePicture}
                 rounded
                 // Decreased size of the avatar and ensured it's rounded
-                style={{ width: '32px', height: '32px' }} // Set custom size for the avatar
+                style={{ width: '36px', height: '32px' }} // Set custom size for the avatar
               />
             }
           >
@@ -90,7 +93,18 @@ export default function Header() {
 
           </Link>
         )}
+
+<Button
+  className="ml-5 w-15 h-12 hidden sm:inline"
+  color="grey"
+  pill
+  onClick={() => dispatch(toggleTheme())}
+>
+  {theme === 'light' ?  <FaMoon /> : <FaSun />}
+</Button>
+        
       </div>
+      
     </Navbar>
   );
 }

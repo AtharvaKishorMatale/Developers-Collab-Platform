@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
-import { Spinner, Button } from 'flowbite-react'; // You can continue using Spinner from Flowbite if needed
+import { Spinner, Button, TextInput } from 'flowbite-react'; // You can continue using Spinner from Flowbite if needed
 
 export default function Login() {
   const [formData, setFormData] = useState({});
@@ -61,21 +61,21 @@ export default function Login() {
           <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
             <div>
               <label className='block mb-1 font-medium' htmlFor='email'>Your email</label>
-              <input
+              <TextInput
                 type='email'
                 placeholder='name@company.com'
                 id='email'
-                className='border rounded-lg p-2 w-full'
+                className='rounded-lg  w-full'
                 onChange={handleChange}
               />
             </div>
             <div>
               <label className='block mb-1 font-medium' htmlFor='password'>Your password</label>
-              <input
+              <TextInput
                 type='password'
                 placeholder='**********'
                 id='password'
-                className='border rounded-lg p-2 w-full'
+                className='rounded-lg w-full'
                 onChange={handleChange}
               />
             </div>
@@ -90,7 +90,7 @@ export default function Login() {
       <span className='pl-3'>Loading...</span>
     </>
   ) : (
-    'Sign Up'
+    'Sign In'
   )}
 </Button>
           </form>
