@@ -4,6 +4,8 @@ import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import SignIn from './pages/Login';
 import SignUp from './pages/SignUp';
+import Header from './components/header';
+
 
 
 
@@ -13,7 +15,7 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      {/* <Header /> */}
+      <Header/>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/sign-in' element={<SignIn/>}/>
