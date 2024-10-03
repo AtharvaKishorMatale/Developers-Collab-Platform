@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice';
 import { Spinner, Button, TextInput } from 'flowbite-react'; // You can continue using Spinner from Flowbite if needed
+import GitHubOAuth from '../components/GitHubOAuth';
 
 export default function Login() {
   const [formData, setFormData] = useState({});
@@ -80,19 +81,20 @@ export default function Login() {
               />
             </div>
             <Button
-  className="bg-gradient-to-r from-blue-700 via-black to-blue-500 text-white"
-  type="submit"
-  disabled={loading}
->
-  {loading ? (
-    <>
-      <Spinner size='sm' />
-      <span className='pl-3'>Loading...</span>
-    </>
-  ) : (
-    'Sign In'
-  )}
-</Button>
+              className="bg-gradient-to-r from-blue-700 via-black to-blue-500 text-white"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? (
+              <>
+                <Spinner size='sm' />
+                <span className='pl-3'>Loading...</span>
+              </>
+              ) : (
+                'Sign In'
+                )}
+            </Button>
+            <GitHubOAuth />
           </form>
           <div className='flex gap-2 text-sm mt-5'>
             <span>Don't have an account?</span>

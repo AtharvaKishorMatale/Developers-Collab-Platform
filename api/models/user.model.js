@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    githubId: {
+      type: String, // New field for GitHub OAuth users
+      required: true,
+    },
     profilePicture: {
       type: String,
       default:
