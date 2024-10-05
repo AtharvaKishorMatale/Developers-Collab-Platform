@@ -3,6 +3,7 @@ import bcryptjs from 'bcryptjs';
 import { errorHandler } from '../utils/error.js';
 import jwt from 'jsonwebtoken';
 
+
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
 
@@ -111,5 +112,54 @@ export const google = async (req, res, next) => {
     }
   } catch (error) {
     next(error);
+  }
+};
+
+export const github = async (req, res, next) => {
+  const { email, userdata } = req.body; // Extract email and user data from request body
+
+  try {
+    // Step 1: Check if the user already exists in the database
+    let user = await User.findOne({ email });
+
+    if (user) {
+      // Step 2: If user exists, return the existing user data to the frontend
+      console.log('User already exists:', user);
+      return res.status(200).json({
+        user:{
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        profilePicture:user.profilePicture}
+      });
+    }else{
+      const newUser = new User({
+        username: userdata.login, // GitHub username
+        email: email,
+        profilePicture:userdata.avatar_url // GitHub primary email
+      });
+  
+      // Step 4: Save the new user to the database
+      await newUser.save();
+      console.log('New user created:', newUser);
+      return res.status(201).json(
+        {user:{
+        id: newUser.id,
+        username: newUser.username,
+        email: newUser.email,
+        profilePicture:newUser.profilePicture}
+      });
+  
+    }
+
+    // Step 3: If user does not exist, create a new user
+   
+ 
+
+    // Step 5: Return the newly created user data to the frontend
+    
+  } catch (error) {
+    console.error('Error processing GitHub OAuth:', error.message);
+    return res.status(500).json({ error: 'Server error' });
   }
 };

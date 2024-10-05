@@ -7,6 +7,8 @@ import SignUp from './pages/SignUp';
 import Header from './components/header';
 import PrivateRoute from './components/PrivateRoute';
 import Dashboard from './pages/Dashboard';
+import Callback from './components/Callback.jsx';
+
 
 
 
@@ -18,6 +20,7 @@ function App() {
       <Header/>
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path ='/callback' element={<Callback/>}/>
         <Route path='/sign-in' element={<SignIn/>}/>
         <Route path='/sign-up' element={<SignUp/>}/>
         <Route element={<PrivateRoute/>}>

@@ -5,6 +5,7 @@ import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSli
 import { Spinner, Button, TextInput } from 'flowbite-react'; // You can continue using Spinner from Flowbite if needed
 import GitHubOAuth from '../components/GitHubOAuth';
 
+
 export default function Login() {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector((state) => state.user);
@@ -94,7 +95,7 @@ export default function Login() {
                 'Sign In'
                 )}
             </Button>
-            <GitHubOAuth />
+            <GitHubOAuth/>
           </form>
           <div className='flex gap-2 text-sm mt-5'>
             <span>Don't have an account?</span>
