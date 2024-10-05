@@ -2,7 +2,6 @@ import { Navbar, TextInput, Button, Avatar, Dropdown } from 'flowbite-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toggleTheme } from '../redux/theme/themeSlice';
 import { FaMoon, FaSun } from 'react-icons/fa';
-
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { signoutSuccess } from '../redux/user/userSlice';
@@ -68,13 +67,12 @@ export default function Header() {
                 alt="user"
                 img={currentUser.profilePicture}
                 rounded
-                // Decreased size of the avatar and ensured it's rounded
                 style={{ width: '36px', height: '32px' }} // Set custom size for the avatar
               />
             }
           >
             <Dropdown.Header>
-              <span className="block text-sm">@{currentUser.username}</span>
+              <span className="block text-sm">{currentUser.username}</span>
               <span className="block text-sm font-medium truncate">{currentUser.email}</span>
             </Dropdown.Header>
             <Link to="/dashboard?tab=profile">
@@ -88,24 +86,20 @@ export default function Header() {
             <button
               className="bg-gradient-to-r from-blue-700 via-black to-blue-500 text-white rounded-lg p-2 outline-none border border-transparent hover:shadow-md transition-all duration-200"
             >
-            Login
+              Login
             </button>
-
-
           </Link>
         )}
 
-<Button
-  className="ml-5 w-15 h-12 hidden sm:inline"
-  color="grey"
-  pill
-  onClick={() => dispatch(toggleTheme())}
->
-  {theme === 'light' ?  <FaMoon /> : <FaSun />}
-</Button>
-        
+        <Button
+          className="ml-5 w-15 h-12 hidden sm:inline"
+          color="grey"
+          pill
+          onClick={() => dispatch(toggleTheme())}
+        >
+          {theme === 'light' ? <FaMoon /> : <FaSun />}
+        </Button>
       </div>
-      
     </Navbar>
   );
 }
