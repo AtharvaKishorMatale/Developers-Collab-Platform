@@ -21,11 +21,11 @@ const Callback = () => {
         
         const u = await getUserData(token); 
         const user=u.userData;
-        const repo=u.repoData;
+        // const repo=u.repoData;
       
         
         
-        const  response=axios.post('/api/auth/github',{
+        const  response =axios.post('/api/auth/github',{
             email:user.email,
             userdata:user
           })
@@ -33,7 +33,8 @@ const Callback = () => {
         console.log('User data received:', user);
         
          dispatch(signInSuccess((await response).data.user));
-        navigate('/');
+         navigate('/');
+        
   //       
           console.log("User ID:", user.id);              // Numeric GitHub User ID
   console.log("Username:", user.login);          // GitHub Username (login handle)
