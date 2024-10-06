@@ -1,9 +1,9 @@
-import UploadProjectFromGitHub from './UploadProjects'
+
 
 const Dash = () => {
   return (
     <div>
-        <UploadProjectFromGitHub/>
+        DashBoard
     </div>
   )
 }

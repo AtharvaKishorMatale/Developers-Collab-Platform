@@ -12,7 +12,7 @@ export default function GitHubOAuth() {
     const handleLogin = async () => {
         try {
           // Start GitHub OAuth flow by redirecting the user to GitHub login page
-          window.location.href = 'https://github.com/login/oauth/authorize?client_id=Ov23ligMkUtaG7iY7vZc&scope=user';
+          window.location.href = 'https://github.com/login/oauth/authorize?client_id=Ov23ligMkUtaG7iY7vZc&scope=repo%20user';
           
          
           // After GitHub redirects back to frontend, you can handle the code and exchange it for an access token.
@@ -29,6 +29,7 @@ export default function GitHubOAuth() {
                   name: userData.login,
                   email: userData.email,
                   githubPhotoUrl: userData.avatar_url,
+                  githubrepo:userData.repos_url
                 }),
               });
     
