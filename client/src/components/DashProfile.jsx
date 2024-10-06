@@ -223,6 +223,18 @@ export default function DashProfile() {
           placeholder='password'
           onChange={handleChange}
         />
+        <TextInput
+          type='text'
+          id='workplace'
+          placeholder='Institute'
+          onChange={handleChange}
+        />
+        <TextInput
+          type='text'
+          id='Bio'
+          placeholder='Bio'
+          onChange={handleChange}
+        />
         <Button
           type='submit'
           gradientDuoTone='purpleToBlue'

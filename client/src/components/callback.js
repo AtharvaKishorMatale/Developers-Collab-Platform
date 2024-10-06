@@ -1,12 +1,13 @@
 import axios from "axios"
 
+let result=null;
 
 async function getAccessToken() {
 
   
-     //code 
+    console.log("in")
     const code = new URLSearchParams(window.location.search).get('code')
-
+    console.log(code)
 
       const res = await axios.post(
       "/login/oauth/access_token",
@@ -23,6 +24,7 @@ async function getAccessToken() {
     )
  
     const access_token = new URLSearchParams(res.data).get('access_token')
+  console.log(access_token);
   
 
     return access_token
@@ -41,6 +43,20 @@ async function getUserData(access_token) {
 ) 
 
 const userData = userResponse.data; 
+
+const repoResponse = await axios.get(
+  "/user/repos",
+  {
+      headers: {
+          'Authorization':`Bearer ${access_token}`
+      }
+  }
+
+) 
+
+const repoData = repoResponse.data; 
+
+
 const emailResponse = await axios.get('/user/emails', {
       headers: {
         Authorization: `Bearer ${access_token}`,
@@ -56,7 +72,12 @@ const emailResponse = await axios.get('/user/emails', {
       userData.email=primaryEmail.email
     }
   
-// for sendiung data to backend
+    result={
+      userData:userData,
+      repoData:repoData
+    }
+
+// //for sendiung data to backend
 // const em=userData.email;
 // const  response=axios.post('/api/auth/github',{
 //   email:em,
@@ -64,8 +85,10 @@ const emailResponse = await axios.get('/user/emails', {
 // })
 
  
-return userData
+return  result;
 
 }
 
-export  {getAccessToken, getUserData}
+
+
+export  {getAccessToken, getUserData, result}

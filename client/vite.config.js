@@ -17,6 +17,13 @@ export default defineConfig({
         secure: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+
+      '/user/repos': {
+        target: 'https://api.github.com',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
       
 
       // Proxy for GitHub emails API request

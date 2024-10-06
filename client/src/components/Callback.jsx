@@ -1,5 +1,5 @@
 
-import { getAccessToken,getUserData } from './callback';
+import { getAccessToken,getUserData} from './callback';
 import { useEffect } from 'react';
  import { useNavigate } from 'react-router-dom';
  import { signInSuccess } from '../redux/user/userSlice';
@@ -19,7 +19,11 @@ const Callback = () => {
         const token = await getAccessToken()
         console.log(token)
         
-        const user = await getUserData(token); 
+        const u = await getUserData(token); 
+        const user=u.userData;
+        const repo=u.repoData;
+      
+        
         
         const  response=axios.post('/api/auth/github',{
             email:user.email,
@@ -27,6 +31,7 @@ const Callback = () => {
           })
 
         console.log('User data received:', user);
+        
          dispatch(signInSuccess((await response).data.user));
         navigate('/');
   //       
