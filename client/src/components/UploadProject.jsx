@@ -1,12 +1,13 @@
 import  { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSelector} from 'react-redux';
 import { result} from './callback'; // Assuming these functions are in the githubAuth file
 
 const UploadProject = () => {
   const [repos, setRepos] = useState([]);
   const [selectedRepo, setSelectedRepo] = useState('');
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const { currentUser } = useSelector((state) => state.user);
   
   // Fetch GitHub repositories after the user is logged in
   useEffect(() => {
@@ -43,9 +44,10 @@ const UploadProject = () => {
       try {
         const selectedRepoData = repos.find(repo => repo.full_name === selectedRepo);
 
+        console.log("running fetch")
         // Send selected repository data to your backend
-        await axios.post('/api/upload-project', {
-          email: userData.email,
+        await axios.post('/api/auth/upload-project', {
+          email: currentUser.email,
           repository: selectedRepoData,
         });
 
