@@ -57,6 +57,7 @@ export default function Header() {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </form>
+      <Link to="/Discover" className='relative mr-4'>Discover Projects</Link>
       <div className="flex gap-2 md:order-2">
         {currentUser ? (
           <Dropdown
