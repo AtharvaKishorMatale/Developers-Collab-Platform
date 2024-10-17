@@ -4,6 +4,8 @@ import DashSidebar from '../components/DashSidebar';
 import DashProfile from '../components/DashProfile';
 import DashPosts from '../components/DashPosts';
 import Dash from '../components/Dash';
+import CreateRequirement from '../components/CreateRequirement';
+
 // import DashSidebar from '../components/DashSidebar';
 // import DashProfile from '../components/DashProfile';
 // import DashPosts from '../components/DashPosts';
@@ -32,7 +34,7 @@ export default function Dashboard() {
       {/* posts... */}
       {tab === 'posts' && <DashPosts/>}
       {/* users */}
-      {/* {tab === 'users' && <DashUsers />} */}
+      {tab === 'project-posts' && <CreateRequirement/>}
       {/* comments  */}
       {/* {tab === 'comments' && <DashComments />} */}
       {/* dashboard comp */}
