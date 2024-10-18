@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ProjectPost = () => {
     const [title, setTitle] = useState('');
@@ -11,8 +12,9 @@ const ProjectPost = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Basic validation check
@@ -21,8 +23,8 @@ const ProjectPost = () => {
             return;
         }
 
-        // Handle form submission logic here
-        console.log({
+        // Construct the form data
+        const formData = {
             title,
             description,
             technologies,
@@ -31,10 +33,29 @@ const ProjectPost = () => {
             responsibilities,
             startDate,
             endDate,
-        });
+        };
 
-        // Reset form fields after submission
-        resetForm();
+        try {
+            const res = await fetch('/api/post/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                setErrorMessage(data.message || 'Failed to create the project posting.');
+                return;
+            }
+
+            // Redirect to the newly created project's page
+            navigate(`/post/${data.slug}`);
+        } catch (error) {
+            setErrorMessage('Something went wrong while posting the project.');
+        }
     };
 
     const resetForm = () => {
@@ -205,7 +226,8 @@ const ProjectPost = () => {
                     </div>
                 </div>
 
-                <button type="submit" className="bg-blue-600 text-white rounded-md px-4 py-1 text-sm hover:bg-blue-700">Post Project</button>
+                <button type="submit" className="bg-blue-600 text-white rounded-md px-4 py-1 text-sm hover:bg-blue-700 focus:outline-none">Post Project</button>
+                <button type="button" onClick={resetForm} className="ml-2 text-sm text-gray-600 hover:text-gray-800 focus:outline-none">Reset</button>
             </form>
         </div>
     );
