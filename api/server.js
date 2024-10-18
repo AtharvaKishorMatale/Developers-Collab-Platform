@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import passport from 'passport';
 import authRoutes from './routes/auth.route.js';
+import projectRoutes from './routes/post.route.js'
 
 const app = express();
 app.use(express.json());
@@ -32,6 +33,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   .catch((err) => console.error('MongoDB connection error:', err));
 
 app.use('/api/auth', authRoutes);
+app.use('/api/post', projectRoutes);
 
 // Serve static frontend files from client/dist
 app.use(express.static(path.join(__dirname, '../client/dist')));
