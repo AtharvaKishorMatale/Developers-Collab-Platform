@@ -1,9 +1,7 @@
-// models/Project.js
-
 import mongoose from 'mongoose';
-console.log("Running in the Model")
+import slugify from 'slugify'; // Optional: Use if you want to generate slugs
 
-const ProjectSchema = new mongoose.Schema({
+const projectSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -23,6 +21,7 @@ const ProjectSchema = new mongoose.Schema({
     teamSize: {
         type: Number,
         required: true,
+        min: 1, // Optional: You can add validation to ensure team size is at least 1
     },
     responsibilities: {
         type: String,
@@ -36,6 +35,19 @@ const ProjectSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    ownerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
+    ownerUsername: {
+        type: String,
+        required: true,
+    },
+    ownerPic: {
+        type: String,
+        required: true,
+    },
     slug: {
         type: String,
         unique: true,
@@ -44,12 +56,14 @@ const ProjectSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Automatically generate a slug from the title
-ProjectSchema.pre('validate', function(next) {
+projectSchema.pre('validate', function(next) {
     if (this.title) {
-        this.slug = this.title.toLowerCase().replace(/ /g, '-') + '-' + Date.now();
+        this.slug = slugify(this.title, { lower: true });
     }
     next();
 });
 
-const Project = mongoose.model('post', ProjectSchema);
-export default Project;
+const Project = mongoose.model('Post', projectSchema);
+
+// Ensure that you're using a default export
+export default Project; // Use default export with ES6 syntax
