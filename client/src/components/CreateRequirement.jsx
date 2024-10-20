@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux'; // Import useSelector to access current user data
 
 const ProjectPost = () => {
     const [title, setTitle] = useState('');
@@ -14,12 +15,21 @@ const ProjectPost = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const navigate = useNavigate();
 
+    // Access current user data from Redux store
+    const { currentUser } = useSelector((state) => state.user);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Basic validation check
         if (!title || !description || !technologies.length || !skills.length || (!teamSize && !customTeamSize) || !responsibilities || !startDate || !endDate) {
             setErrorMessage('Please fill in all fields.');
+            return;
+        }
+
+        // Ensure end date is after start date
+        if (new Date(startDate) > new Date(endDate)) {
+            setErrorMessage('End date must be after the start date.');
             return;
         }
 
@@ -33,6 +43,9 @@ const ProjectPost = () => {
             responsibilities,
             startDate,
             endDate,
+            ownerId: currentUser.id, // Store the ID of the current user
+            ownerUsername:currentUser.username,
+            ownerPic:currentUser.profilePicture,
         };
 
         try {
@@ -209,7 +222,7 @@ const ProjectPost = () => {
                                 value={startDate}
                                 onChange={(e) => setStartDate(e.target.value)}
                                 required
-                                className="border border-gray-300 bg-gray-50 rounded-md p-1 text-sm focus:outline-none focus:ring focus:ring-blue-200"
+                                className="w-full border border-gray-300 bg-gray-50 rounded-md p-1 text-sm focus:outline-none focus:ring focus:ring-blue-200"
                             />
                         </div>
                         <div className="w-full">
@@ -220,14 +233,14 @@ const ProjectPost = () => {
                                 value={endDate}
                                 onChange={(e) => setEndDate(e.target.value)}
                                 required
-                                className="border border-gray-300 bg-gray-50 rounded-md p-1 text-sm focus:outline-none focus:ring focus:ring-blue-200"
+                                className="w-full border border-gray-300 bg-gray-50 rounded-md p-1 text-sm focus:outline-none focus:ring focus:ring-blue-200"
                             />
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" className="bg-blue-600 text-white rounded-md px-4 py-1 text-sm hover:bg-blue-700 focus:outline-none">Post Project</button>
-                <button type="button" onClick={resetForm} className="ml-2 text-sm text-gray-600 hover:text-gray-800 focus:outline-none">Reset</button>
+                <button type="submit" className="bg-blue-600 text-white rounded-md px-4 py-2 w-full mt-4">Post Project</button>
+                <button type="button" onClick={resetForm} className="bg-gray-200 text-gray-600 rounded-md px-4 py-2 w-full mt-2">Reset</button>
             </form>
         </div>
     );

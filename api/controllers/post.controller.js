@@ -3,46 +3,63 @@
 import Project from '../models/post.model.js';
 
 export const createProject = async (req, res) => {
+  console.log("Running Into Controller");
 
-    console.log("Running Into Controller")
-    const {
-        title,
-        description,
-        technologies,
-        skills,
-        teamSize,
-        responsibilities,
-        startDate,
-        endDate
-    } = req.body;
+  const {
+      title,
+      description,
+      technologies,
+      skills,
+      teamSize,
+      responsibilities,
+      startDate,
+      endDate,
+      ownerId, // Include ownerId from the request body
+      ownerUsername,
+      ownerPic,
 
-    // Basic validation
-    if (!title || !description || !technologies || !skills || !teamSize || !responsibilities || !startDate || !endDate) {
-        return res.status(400).json({ message: 'Please fill in all fields.' });
-    }
+  } = req.body;
 
-    try {
-        // Create a new project
-        const newProject = new Project({
-            title,
-            description,
-            technologies,
-            skills,
-            teamSize,
-            responsibilities,
-            startDate,
-            endDate,
-        });
+  // Basic validation
+  if (!title || !description || !technologies || !skills || !teamSize || !responsibilities || !startDate || !endDate || !ownerId) {
+      return res.status(400).json({ message: 'Please fill in all fields.' });
+  }
 
-        // Save the project to the database
-        const savedProject = await newProject.save();
+  // Additional validation for teamSize to ensure it's a number
+  if (isNaN(teamSize) || Number(teamSize) <= 0) {
+      return res.status(400).json({ message: 'Team size must be a positive number.' });
+  }
 
-        // Respond with the created project data
-        res.status(201).json(savedProject);
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).json({ message: 'Server error while creating the project.' });
-    }
+  // Ensure end date is after start date
+  if (new Date(startDate) > new Date(endDate)) {
+      return res.status(400).json({ message: 'End date must be after the start date.' });
+  }
+
+  try {
+      // Create a new project
+      const newProject = new Project({
+          title,
+          description,
+          technologies,
+          skills,
+          teamSize,
+          responsibilities,
+          startDate,
+          endDate,
+          ownerId, // Save the ownerId with the project
+          ownerUsername,
+          ownerPic,
+      });
+
+      // Save the project to the database
+      const savedProject = await newProject.save();
+
+      // Respond with the created project data
+      res.status(201).json(savedProject);
+  } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: 'Server error while creating the project.' });
+  }
 };
 
 

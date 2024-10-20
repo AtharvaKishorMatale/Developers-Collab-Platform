@@ -8,6 +8,7 @@ import session from 'express-session';
 import passport from 'passport';
 import authRoutes from './routes/auth.route.js';
 import projectRoutes from './routes/post.route.js'
+import notificationRoutes from './routes/notification.route.js'
 
 const app = express();
 app.use(express.json());
@@ -34,6 +35,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/post', projectRoutes);
+app.use('/api/alert', notificationRoutes);
 
 // Serve static frontend files from client/dist
 app.use(express.static(path.join(__dirname, '../client/dist')));
