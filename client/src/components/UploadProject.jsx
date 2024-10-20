@@ -17,11 +17,6 @@ const UploadProject = () => {
         console.log(result.repoData)
         setLoading(true);
         
-      
-      
-        
-
-       
         
         setRepos(result.repoData);
         

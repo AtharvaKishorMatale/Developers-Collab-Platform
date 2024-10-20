@@ -1,7 +1,7 @@
 // routes/projectRoutes.js
 
 import express from 'express';
-import { createProject } from '../controllers/post.controller.js';
+import { createProject, getProjects } from '../controllers/post.controller.js';
 
 console.log("Running in the routes")
 
@@ -11,5 +11,6 @@ const router = express.Router();
 // @desc    Create a new project
 // @access  Public
 router.post('/create', createProject);
+router.get('/getPosts', getProjects);
 
 export default router;

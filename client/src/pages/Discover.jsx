@@ -1,8 +1,11 @@
+import Post from "./post"
 
 
 const Discover = () => {
   return (
-    <div>Discover</div>
+    <div>
+      <Post/>
+    </div>
   )
 }
 
