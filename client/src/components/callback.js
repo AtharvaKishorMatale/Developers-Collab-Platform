@@ -56,6 +56,7 @@ const repoResponse = await axios.get(
 
 const repoData = repoResponse.data; 
 
+console.log("repo :"+ repoData);
 
 const emailResponse = await axios.get('/user/emails', {
       headers: {
