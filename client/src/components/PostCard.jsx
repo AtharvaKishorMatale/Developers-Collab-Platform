@@ -25,6 +25,7 @@ export default function PostCard({ post }) {
       
       // Show success message
       toast.success('Join request sent successfully!');
+      // console.log(post.ownerId);
     } catch (error) {
       console.error('Error sending join request:', error);
       toast.error('Failed to send join request. Please try again.');

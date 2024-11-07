@@ -5,6 +5,7 @@ import { FaMoon, FaSun } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { signoutSuccess } from '../redux/user/userSlice';
+import Notification from './notification';
 
 export default function Header() {
   const location = useLocation();
@@ -91,6 +92,8 @@ export default function Header() {
             </button>
           </Link>
         )}
+
+        <Notification/>
 
         <Button
           className="ml-5 w-15 h-12 hidden sm:inline"

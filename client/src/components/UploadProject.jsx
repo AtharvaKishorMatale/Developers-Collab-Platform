@@ -8,6 +8,8 @@ const UploadProject = () => {
   const [selectedRepo, setSelectedRepo] = useState('');
   const [loading, setLoading] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
+
+  console.log(result);
   
   // Fetch GitHub repositories after the user is logged in
   useEffect(() => {
