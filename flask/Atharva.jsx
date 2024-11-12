@@ -6,4 +6,4 @@ const Atharva = () => {
   )
 }
 
-export default Atharva
+export default Atharva 
