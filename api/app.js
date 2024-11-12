@@ -3,6 +3,7 @@ import session from 'express-session';
 import passport from 'passport';
 import { Strategy as GitHubStrategy } from 'passport-github2'; // ES module import for GitHubStrategy
 
+
 const app = express();
 
 // GitHub OAuth credentials
@@ -74,3 +75,5 @@ const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+
+// client/src/App.js
