@@ -13,7 +13,7 @@ const UploadProject = () => {
   
   // Fetch GitHub repositories after the user is logged in
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async () => {0
       try {
         console.log("started the component")
         console.log(result.repoData)

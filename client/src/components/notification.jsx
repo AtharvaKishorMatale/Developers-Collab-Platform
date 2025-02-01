@@ -1,76 +1,94 @@
-// components/NotificationIcon.js
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { FaBell } from 'react-icons/fa';
+import React from 'react';
 
-export default function NotificationIcon() {
-  const { currentUser } = useSelector((state) => state.user) || {}; // Handle potential null
+const Notifications = ({ currentUserId }) => {
   const [notifications, setNotifications] = useState([]);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const [showNotifications, setShowNotifications] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    // Check if currentUser and token are available
-    if (!currentUser || !currentUser.token) {
-      console.warn('User is not logged in or token is missing.');
-      return;
-    }
-
-    
-    const fetchNotifications = async () => {
-      try {
-        const response = await axios.get('/api/notifications/getno', {
-          headers: { Authorization: `Bearer ${currentUser.token}` }
-        });
-        
-        if (response && response.data) { // Check if response and data are present
-          setNotifications(response.data);
-          setUnreadCount(response.data.filter((notification) => !notification.isRead).length);
-        } else {
-          console.warn('No notifications data found.');
-        }
-      } catch (error) {
-        console.error('Error fetching notifications:', error);
-        toast.error('Failed to load notifications.');
-      }
-    };
-
+    // Initial fetch when component mounts
     fetchNotifications();
-  }, [currentUser]);
+    // Polling to fetch notifications every minute
+    const interval = setInterval(fetchNotifications, 60000); 
+    return () => clearInterval(interval);
+  }, [currentUserId]);
 
-  const toggleNotifications = () => setShowNotifications(!showNotifications);
+  const fetchNotifications = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get('/api/notifications/getno', {
+        params: { recipientId: currentUserId },
+      });
+      setNotifications(response.data);
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleDropdown = async () => {
+    setIsDropdownOpen(!isDropdownOpen);
+
+    if (!isDropdownOpen) {
+      // Mark notifications as read when opening the dropdown
+      await markNotificationsAsRead();
+      fetchNotifications(); // Refresh notifications
+    }
+  };
+
+  const markNotificationsAsRead = async () => {
+    try {
+      await axios.put('/api/notifications/markAsRead', { recipientId: currentUserId });
+    } catch (error) {
+      console.error('Error marking notifications as read:', error);
+    }
+  };
 
   return (
     <div className="relative">
-      <button
-        onClick={toggleNotifications}
-        className="relative p-2 bg-teal-500 rounded-full text-white hover:bg-teal-600 focus:outline-none"
-      >
-        <span className="material-icons">notifications</span>
-        {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-            {unreadCount}
+      {/* Notification Icon Button */}
+      <button onClick={toggleDropdown} className="relative focus:outline-none hover:bg-gray-200 p-2 rounded">
+        <FaBell size={24} />
+        {/* Display the count of unread notifications */}
+        {notifications.filter(n => !n.isRead).length > 0 && (
+          <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+            {notifications.filter(n => !n.isRead).length}
           </span>
         )}
       </button>
 
-      {showNotifications && (
-        <div className="absolute top-12 right-0 w-72 bg-white shadow-lg border border-gray-200 rounded-lg p-4 max-h-96 overflow-y-auto z-10">
-          {notifications.length > 0 ? (
-            notifications.map((notification) => (
-              <div key={notification._id} className="p-2 border-b last:border-none">
-                <p className="text-sm font-semibold">{notification.message}</p>
-                <span className="text-xs text-gray-500">
-                  {new Date(notification.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-            ))
+      {/* Notifications Dropdown */}
+      {isDropdownOpen && (
+        <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded shadow-lg p-4">
+          <h2 className="font-semibold mb-2 text-black">Notifications</h2>
+          <hr className="my-2 border-gray-200" />
+          {loading ? (
+            <p>Loading notifications...</p>
+          ) : notifications.length === 0 ? (
+            <p>No new notifications</p>
           ) : (
-            <p className="text-sm text-gray-600">No notifications</p>
+            <ul>
+              {notifications.map((notification, index) => (
+                <React.Fragment key={notification._id || notification.id}>
+                  <li className={`notification ${notification.isRead ? '' : 'font-semibold'}`}>
+                    <p className="text-black">{notification.message}</p>
+                    <small className="text-gray-500">
+                      {new Date(notification.createdAt).toLocaleString()}
+                    </small>
+                  </li>
+                  {index < notifications.length - 1 && <hr className="my-2 border-gray-200" />}
+                </React.Fragment>
+              ))}
+            </ul>
           )}
         </div>
       )}
     </div>
   );
-}
+};
+
+export default Notifications;

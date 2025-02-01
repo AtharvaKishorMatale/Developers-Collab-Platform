@@ -123,8 +123,6 @@ export const github = async (req, res, next) => {
     let user = await User.findOne({ email });
 
     if (user) {
-      // Step 2: If user exists, return the existing user data to the frontend
-      console.log('User already exists:', user);
       return res.status(200).json({
         user:{
         id: user.id,
@@ -151,12 +149,6 @@ export const github = async (req, res, next) => {
       });
   
     }
-
-    // Step 3: If user does not exist, create a new user
-   
- 
-
-    // Step 5: Return the newly created user data to the frontend
     
   } catch (error) {
     console.error('Error processing GitHub OAuth:', error.message);
