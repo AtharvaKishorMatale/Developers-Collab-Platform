@@ -9,14 +9,12 @@ import { toast } from 'react-toastify';
 export default function PostCard({ post }) {
 
   const { currentUser } = useSelector((state) => state.user);
-  console.log(post.ownerId)
-  console.log(currentUser.id)
-  console.log(post._id)
+ 
 
   const handleJoinRequest = async () => {
     try {
       // Send a request to the backend to notify the post owner
-      await axios.post('/api/alert/notifications', {
+      await axios.post('/api/notifications/sendno', {
         recipientId: post.ownerId, // Assuming `post` has an `ownerId` field representing the post owner's ID
         senderId: currentUser.id, // Current user's ID
         postId: post._id, // ID of the post being requested to join

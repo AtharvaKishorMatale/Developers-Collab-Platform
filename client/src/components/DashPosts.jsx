@@ -1,4 +1,3 @@
-import React from 'react'
 import UploadProject from './UploadProject'
 
 const DashPosts = () => {

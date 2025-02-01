@@ -101,14 +101,25 @@ export default function DashProfile() {
     }
     try {
       dispatch(updateStart());
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
-        method: 'PUT',
+      
+      // const b={
+      //   id:currentUser._id,
+      //   password:currentUser.password,
+      //   username:currentUser.username,
+      //   profile:currentUser.profilePicture,
+      //   bio:formData.Bio,
+      //   institute:formData.workplace}
+      //   console.log(currentUser);
+      const res = await fetch('/api/user/update/$(current)', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData)
+
       });
       const data = await res.json();
+
       if (!res.ok) {
         dispatch(updateFailure(data.message));
         setUpdateUserError(data.message);
@@ -240,20 +251,21 @@ export default function DashProfile() {
           gradientDuoTone='purpleToBlue'
           outline
           disabled={loading || imageFileUploading}
+          onClick={handleSubmit}
         >
           {loading ? 'Loading...' : 'Update'}
         </Button>
-        {currentUser.isAdmin && (
+        {/* {currentUser.isAdmin && (
           <Link to={'/create-post'}>
             <Button
               type='button'
               gradientDuoTone='purpleToPink'
               className='w-full'
             >
-              Create a post
+              Update
             </Button>
           </Link>
-        )}
+        )} */}
       </form>
       <div className='text-red-500 flex justify-between mt-5'>
         <span onClick={() => setShowModal(true)} className='cursor-pointer'>

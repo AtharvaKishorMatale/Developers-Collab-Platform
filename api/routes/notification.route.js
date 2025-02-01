@@ -5,7 +5,8 @@ import authenticateUser from '../middleware/authenticateUser.js';
 
 const router = express.Router();
 
-router.post('/notifications', sendJoinRequest);
+router.post('/sendno', sendJoinRequest);
 router.get('/getno', authenticateUser, getNotifications);
 
+  
 export default router;

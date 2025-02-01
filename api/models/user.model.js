@@ -17,13 +17,20 @@ const userSchema = new mongoose.Schema({
     },
     profilePicture: {
         type: String,
-        default:
-            'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+        default: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
     },
     isAdmin: {
         type: Boolean,
         default: false,
     },
+    // bio: {
+    //     type: String,
+    //     default: '', // Optional bio field with default empty string
+    // },
+    // institute: {
+    //     type: String,
+    //     default: '', // Optional institute field with default empty string
+    // },
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);
