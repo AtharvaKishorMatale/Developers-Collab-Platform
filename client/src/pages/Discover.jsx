@@ -1,10 +1,10 @@
-import Post from "./post"
+import ProjectList from "./ProjectList"
 
 
 const Discover = () => {
   return (
     <div>
-      <Post/>
+      <ProjectList/>
     </div>
   )
 }
