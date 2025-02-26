@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation System</title>
+    <script>
+        async function fetchProjects() {
+            const response = await fetch('/projects');
+            const data = await response.json();
+            let projectList = document.getElementById("projects");
+            projectList.innerHTML = ""; 
+            data.projects.forEach(project => {
+                let item = document.createElement("li");
+                item.textContent = `${project.title} - ${project.description} (Difficulty: ${project.difficulty})`;
+                projectList.appendChild(item);
+            });
+        }
+        window.onload = fetchProjects;
+    </script>
+</head>
+<body>
+    <h1>Project List</h1>
+    <ul id="projects"></ul>
+</body>
+</html>
