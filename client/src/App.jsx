@@ -9,12 +9,12 @@ import Header from './components/header';
 import PrivateRoute from './components/PrivateRoute';
 import Dashboard from './pages/Dashboard';
 import Callback from './components/Callback.jsx';
+import Chat from "./components/Chat";
 
 
 
 
 function App() {
-
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -22,6 +22,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path ='/Discover' element={<Discover/>}/>
+        <Route path ='/Chat' element={<Chat groupId="group1" user="Arnav-Panchal"/>}/>
         <Route path ='/callback' element={<Callback/>}/>
         <Route path='/sign-in' element={<SignIn/>}/>
         <Route path='/sign-up' element={<SignUp/>}/>

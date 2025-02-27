@@ -1,31 +1,39 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 from pymongo import MongoClient
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for frontend communication
 
-# Replace <username>, <password>, and <database_name> with your MongoDB Atlas details
-MONGO_URI = "mongodb+srv://arnavpanchal27:1DSmE1BNxAZd0etn@cluster0.g6gbv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-# Connect to MongoDB Atlas
-client = MongoClient(MONGO_URI)
-db = client["devconnect"]  # Database Name
-projects_collection = db["projects"]  # Collection Name
+# Connect to MongoDB
+client = MongoClient("mongodb+srv://arnavpanchal27:1DSmE1BNxAZd0etn@cluster0.g6gbv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+db = client["test"]  # Replace with your actual DB name
+posts_collection = db["posts"]
 
-# Insert sample projects if collection is empty
-if projects_collection.count_documents({}) == 0:  
-    projects_collection.insert_many([
-        {"title": "AI Chatbot", "description": "A chatbot using NLP techniques.", "difficulty": "Medium", "category": "AI"},
-        {"title": "E-commerce Website", "description": "A React-based e-commerce platform.", "difficulty": "Hard", "category": "Web Development"}
-    ])
-
-@app.route("/")  # This handles requests to "/"
+@app.route("/")
 def home():
-    return "Welcome to the Movie Recommendation System!"
+    return jsonify({"message": "API is running!"})
 
-@app.route("/projects", methods=["GET"])
-def get_projects():
-    """Fetch all projects from MongoDB"""
-    projects = list(projects_collection.find({}, {"_id": 0}))  # Exclude _id field
-    return jsonify({"projects": projects})
+# Fetch all posts
+@app.route("/flask/posts", methods=["GET"])
+def get_posts():
+    posts = list(posts_collection.find({}, {"_id": 0}))  # Exclude _id
+    console.log(posts)
+    return jsonify(posts)
+
+# Fetch recommendations based on user skills
+@app.route("/flask/recommendations", methods=["POST"])
+def get_recommendations():
+    user_skills = request.json.get("skills", [])
+    if not user_skills:
+        return jsonify({"message": "No skills provided"}), 400
+
+    matched_posts = list(
+        posts_collection.find(
+            {"skills": {"$in": user_skills}}, {"_id": 0}
+        )
+    )
+    return jsonify(matched_posts)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5000)

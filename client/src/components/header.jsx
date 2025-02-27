@@ -53,6 +53,12 @@ export default function Header() {
           />
         </form>
         <nav className="flex items-center space-x-4">
+        <Link
+            to="/Chat"
+            className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400"
+          >
+            Chats
+          </Link>
           <Link
             to="/Discover"
             className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400"
