@@ -5,3 +5,5 @@ pandas
 flask-oauthlib
 flask-sqlalchemy
 flask_pymongo
+flask-cors
+dnspython
