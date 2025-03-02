@@ -52,8 +52,8 @@ const Chat = ({ groupId, user }) => {
         Group Chat: {groupId}
       </header>
 
-      {/* Chat Messages - Flexible Height */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
+      {/* Chat Messages - Flexible Height with padding to avoid overlap */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-3 pb-20 min-h-0">
         {messages.length === 0 ? (
           <p className="text-gray-400 text-center">No messages yet</p>
         ) : (
@@ -72,8 +72,8 @@ const Chat = ({ groupId, user }) => {
         )}
       </div>
 
-      {/* Input Field - Fixed Height */}
-      <div className="flex p-4 bg-gray-800 flex-shrink-0">
+      {/* Input Field - Fixed at Bottom */}
+      <div className="fixed bottom-0 left-0 w-full bg-gray-800 p-4 flex">
         <input
           type="text"
           value={message}

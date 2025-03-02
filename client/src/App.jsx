@@ -22,7 +22,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path ='/Discover' element={<Discover/>}/>
-        <Route path ='/Chat' element={<Chat groupId="group1" user="Arnav-Panchal"/>}/>
+        <Route path ='/Chat' element={<Chat groupId="DevConnect" user="Arnav-Panchal"/>}/>
         <Route path ='/callback' element={<Callback/>}/>
         <Route path='/sign-in' element={<SignIn/>}/>
         <Route path='/sign-up' element={<SignUp/>}/>
