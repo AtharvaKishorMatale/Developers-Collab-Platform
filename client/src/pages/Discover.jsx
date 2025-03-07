@@ -1,13 +1,17 @@
 import ProjectList from "./ProjectList"
-// import Chat from "../components/Chat";
 import Recommendations from "../flask/recommendations";
+import ProjectRecommendations from "../flask m/ProjectRecommendations";
+// import TeammateRecommendations from "../flask m/TeammateRecommendations";
+
 
 
 const Discover = () => {
+
   return (
     <div>
       <ProjectList/>
-      {/* <Chat groupId="group1" user="User1" /> */}
+      <ProjectRecommendations/>
+      {/* <TeammateRecommendations postId={postId}/> */}
       <Recommendations />
     </div>
   )

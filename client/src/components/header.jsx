@@ -106,7 +106,7 @@ export default function Header() {
           </button>
           {currentUser && (
             <div className="relative">
-              <Notification currentUserId={currentUser.id} />
+              <Notification currentUserId={currentUser._id} />
             </div>
           )}
         </nav>
