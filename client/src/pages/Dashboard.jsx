@@ -5,6 +5,7 @@ import DashProfile from '../components/DashProfile';
 import DashPosts from '../components/DashPosts';
 import Dash from '../components/Dash';
 import CreateRequirement from '../components/CreateRequirement';
+import TeammateRecommendations from '../flask m/TeammateRecommendations';
 
 // import DashSidebar from '../components/DashSidebar';
 // import DashProfile from '../components/DashProfile';
@@ -33,6 +34,8 @@ export default function Dashboard() {
       {tab === 'profile' && <DashProfile/>}
       {/* posts... */}
       {tab === 'posts' && <DashPosts/>}
+      {/* posts... */}
+      {tab === 'Posts-recommendations' && <TeammateRecommendations postId={'6731a9000918c843c2de7ab3'}/>}
       {/* users */}
       {tab === 'project-posts' && <CreateRequirement/>}
       {/* comments  */}

@@ -7,9 +7,9 @@ export default function ProjectCard({ project, currentUser }) {
   const handleJoinRequest = async () => {
     try {
       await axios.post("/api/notifications/send", {
-        recipientId: project.ownerId, // Assuming `project` has `ownerId`
-        senderId: currentUser.id, // Current user's ID
-        postId: project._id, // ID of the project
+        recipientId: project.ownerId,
+        senderId: currentUser.id,
+        postId: project._id,
         message: `${currentUser.username} has requested to join your project: ${project.title}`,
       });
 
@@ -45,7 +45,9 @@ export default function ProjectCard({ project, currentUser }) {
         </div>
       </div>
       <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <p className="text-gray-500 dark:text-gray-400">{project.date}</p>
+        <p className="text-gray-500 dark:text-gray-400">
+          {project.date ? new Date(project.date).toLocaleDateString() : "Date not provided"}
+        </p>
         <button
           onClick={handleJoinRequest}
           className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300 flex items-center justify-center"
@@ -64,10 +66,10 @@ ProjectCard.propTypes = {
     description: PropTypes.string.isRequired,
     technologies: PropTypes.arrayOf(PropTypes.string),
     skills: PropTypes.arrayOf(PropTypes.string),
-    date: PropTypes.string.isRequired,
+    date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date), PropTypes.oneOf([null])]), // This is the fix!
     slug: PropTypes.string,
     _id: PropTypes.string,
-    ownerId: PropTypes.string.isRequired, // Added ownerId to PropTypes
+    ownerId: PropTypes.string.isRequired,
   }).isRequired,
   currentUser: PropTypes.shape({
     id: PropTypes.string.isRequired,

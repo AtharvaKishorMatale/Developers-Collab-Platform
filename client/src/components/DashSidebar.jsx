@@ -91,6 +91,18 @@ export default function DashSidebar() {
               </Sidebar.Item>
             </Link>
           )}
+
+          {currentUser && (
+            <Link to='/dashboard?tab=Posts-recommendations'>
+              <Sidebar.Item
+                active={tab === 'Posts-recommendations'}
+                icon={HiDocumentText}
+                as='div'
+              >
+              Posts 
+              </Sidebar.Item>
+            </Link>
+          )}
           
           {currentUser.isAdmin && (
             <>

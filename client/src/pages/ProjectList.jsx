@@ -1,29 +1,32 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import ProjectCard from './ProjectCard'
-import { Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import ProjectCard from './ProjectCard';
+import { Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useSelector } from 'react-redux';
 
 const ProjectList = () => {
-  const [projects, setProjects] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [totalProjects, setTotalProjects] = useState(0)
-  const [currentPage, setCurrentPage] = useState(1)
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [totalProjects, setTotalProjects] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const { currentUser } = useSelector((state) => state.user);
+
   const [filters, setFilters] = useState({
     searchTerm: '',
     technology: '',
     skill: '',
     order: 'desc',
     limit: 12,
-  })
+  });
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        setLoading(true)
-        setError(null)
-        const startIndex = (currentPage - 1) * filters.limit
-        
+        setLoading(true);
+        setError(null);
+        const startIndex = (currentPage - 1) * filters.limit;
+
         const queryParams = new URLSearchParams({
           startIndex: startIndex.toString(),
           limit: filters.limit.toString(),
@@ -31,48 +34,57 @@ const ProjectList = () => {
           ...(filters.searchTerm && { searchTerm: filters.searchTerm }),
           ...(filters.technology && { technology: filters.technology }),
           ...(filters.skill && { skill: filters.skill }),
-        })
+        });
 
-        const response = await axios.get(`/api/post/getPosts?${queryParams}`)
+        const response = await axios.get(`/api/post/getPosts?${queryParams}`);
+
         
-        console.log('API Response:', response.data)
 
         if (response.data && response.data.posts) {
-          setProjects(response.data.posts)
-          setTotalProjects(response.data.totalPosts || 0)
+          // Ensure each project has a date property, even if it's null or undefined
+          const validatedProjects = response.data.posts.map((project) => ({
+            ...project,
+            date: project.date || null, // Provide a default value if date is missing
+          }));
+          setProjects(validatedProjects);
+          setTotalProjects(response.data.totalPosts || 0);
         } else if (response.data && Array.isArray(response.data)) {
-          setProjects(response.data)
-          setTotalProjects(response.data.length)
+          const validatedProjects = response.data.map((project) => ({
+            ...project,
+            date: project.date || null,
+          }));
+          setProjects(validatedProjects);
+          setTotalProjects(response.data.length);
         } else {
-          console.error('Unexpected response format:', response.data)
-          setError('Unable to load projects. Please try again later.')
-          setProjects([])
-          setTotalProjects(0)
+          console.error('Unexpected response format:', response.data);
+          setError('Unable to load projects. Please try again later.');
+          setProjects([]);
+          setTotalProjects(0);
         }
       } catch (err) {
-        console.error('Fetch error:', err)
-        setError(err.response?.data?.message || 'Failed to fetch projects')
-        setProjects([])
-        setTotalProjects(0)
+        console.error('Fetch error:', err);
+        setError(err.response?.data?.message || 'Failed to fetch projects');
+        setProjects([]);
+        setTotalProjects(0);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchProjects()
-  }, [currentPage, filters])
+    fetchProjects();
+  }, [currentPage, filters]);
 
   const handleSearch = (e) => {
-    setFilters({ ...filters, searchTerm: e.target.value })
-    setCurrentPage(1)
-  }
+    setFilters({ ...filters, searchTerm: e.target.value });
+    setCurrentPage(1);
+  };
 
   const handleFilterChange = (name, value) => {
-    setFilters({ ...filters, [name]: value })
-    setCurrentPage(1)
-  }
+    setFilters({ ...filters, [name]: value });
+    setCurrentPage(1);
+  };
 
-  const totalPages = Math.ceil(totalProjects / filters.limit)
+  const totalPages = Math.ceil(totalProjects / filters.limit);
 
   return (
     <div className="container mx-auto p-4 space-y-8">
@@ -137,7 +149,7 @@ const ProjectList = () => {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {projects.map((project) => (
-              <ProjectCard key={project._id} project={project} />
+              <ProjectCard key={project._id} project={project} currentUser={currentUser} />
             ))}
           </div>
 
@@ -165,7 +177,7 @@ const ProjectList = () => {
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ProjectList
+export default ProjectList;
