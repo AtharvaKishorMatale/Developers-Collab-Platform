@@ -1,6 +1,7 @@
-import ProjectList from "./ProjectList"
-import Recommendations from "../flask/recommendations";
+// import ProjectList from "./ProjectList"
+// import Recommendations from "../flask/recommendations";
 import ProjectRecommendations from "../flask m/ProjectRecommendations";
+import Collaboration from "./Collaboration";
 // import TeammateRecommendations from "../flask m/TeammateRecommendations";
 
 
@@ -9,10 +10,11 @@ const Discover = () => {
 
   return (
     <div>
-      <ProjectList/>
+      {/* <ProjectList/> */}
+      <Collaboration/>
       <ProjectRecommendations/>
       {/* <TeammateRecommendations postId={postId}/> */}
-      <Recommendations />
+      {/* <Recommendations /> */}
     </div>
   )
 }

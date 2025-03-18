@@ -11,6 +11,7 @@ export default function ProjectCard({ project, currentUser }) {
         senderId: currentUser.id,
         postId: project._id,
         message: `${currentUser.username} has requested to join your project: ${project.title}`,
+        status: `pending`,
       });
 
       toast.success("Join request sent successfully!");

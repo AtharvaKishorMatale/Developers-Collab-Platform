@@ -85,19 +85,27 @@ export const getProjects = async (req, res, next) => {
       }),
     };
 
-    // Fetch projects based on filters, sorting, and pagination
+    // Fetch projects with required fields and populate owner details
     const posts = await Project.find(filter)
       .sort({ updatedAt: sortDirection })
       .skip(startIndex)
-      .limit(limit);
+      .limit(limit)
+      .select("title description technologies skills teamSize responsibilities startDate endDate ownerId ownerUsername ownerPic slug")
+      .populate("ownerId", "name avatar"); // Populate owner details
 
     // Get the total number of projects matching the filter
     const totalPosts = await Project.countDocuments(filter);
+
+    // Debugging logs
+    console.log("Fetched Projects:", posts);
+
     res.status(200).json({
       posts,
       totalPosts,
     });
   } catch (error) {
+    console.error("Error fetching projects:", error);
     next(error); // Pass error to error handling middleware
   }
 };
+

@@ -37,4 +37,27 @@ router.put("/markAsRead", async (req, res) => {
   }
 });
 
+router.get('/sent/:currentUserId', async (req, res) => {
+  try {
+      const { currentUserId } = req.params;
+      console.log("Received currentUserId:", currentUserId);
+      // Ensure currentUserId is provided
+      if (!currentUserId) {
+          return res.status(400).json({ message: "User ID is required" });
+      }
+
+      // Fetch notifications where senderId matches currentUserId
+      const notifications = await Notification.find({ senderId: currentUserId }).sort({ timestamp: -1 });
+
+      console.log("Notification Data:", notifications);
+      res.status(200).json(notifications);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+});
+
+
+
+// router.get('/', authMiddleware, getTeamRequests);
+
 export default router;
