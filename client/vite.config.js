@@ -43,7 +43,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),  // Remove `/api` prefix
       },
       '/api': {
-        target: 'https://developers-collab-platform.onrender.com',
+        target: 'https://developers-collab-platform-1.onrender.com',
         secure: false,
       },
     },
