@@ -4,7 +4,7 @@ import MainLayout from '../layouts/MainLayout';
 import { 
   Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle 
 } from '../group/ui/card';
-import { Button } from '../group/ui/button';
+import { Button } from '../group/ui/button';  // Ensure the Button component is imported correctly from the right path
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../group/ui/tabs';
 import { 
   Plus, UserPlus, Users, MessageSquare
