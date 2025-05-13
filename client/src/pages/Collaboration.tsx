@@ -4,7 +4,6 @@ import MainLayout from '../layouts/MainLayout';
 import { 
   Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle 
 } from '../group/ui/card';
-import { Button } from '../group/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../group/ui/tabs';
 import { 
   Plus, UserPlus, Users, MessageSquare
@@ -36,10 +35,11 @@ const Collaboration = () => {
           </div>
           
           <div className="flex items-center gap-2">
-            <Button onClick={handlePostProject}>
+            {/* Replacing custom Button with a simpler HTML button */}
+            <button onClick={handlePostProject} className="btn">
               <Plus className="h-4 w-4 mr-2" />
               Post Project
-            </Button>
+            </button>
           </div>
         </div>
         
