@@ -6,6 +6,7 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
+    host: "0.0.0.0",
     proxy: {
       '/login/oauth/access_token': {
         target: 'https://github.com',
@@ -42,7 +43,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/api/, ''),  // Remove `/api` prefix
       },
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://developers-collab-platform.onrender.com',
         secure: false,
       },
     },

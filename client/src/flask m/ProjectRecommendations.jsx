@@ -8,6 +8,7 @@ function ProjectRecommendations() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const userId = currentUser.id;
+    console.log(currentUser.username);
 
     useEffect(() => {
         console.log(currentUser.id)

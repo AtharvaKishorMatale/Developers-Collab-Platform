@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+// import Summary from "./Summary"
 
 const Dashboard = () => {
   // Retrieve user data from the Redux store
@@ -6,6 +7,7 @@ const Dashboard = () => {
 
   return (
     <div className="max-w-lg mx-auto p-5 w-full">
+      {/* <Summary/> */}
       {/* User Info Section */}
       <div className="bg-gray-400 p-5 rounded-lg shadow-md mb-5">
         <h2 className="text-2xl font-bold mb-2">{currentUser.username}</h2>

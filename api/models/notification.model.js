@@ -4,6 +4,7 @@ const NotificationSchema = new mongoose.Schema({
   senderId: String,
   postId: String,
   message: String,
+  status: { type: String, enum: ['pending', 'accepted', 'rejected'], default: 'pending' },
   isRead: { type: Boolean, default: false },
   timestamp: { type: Date, default: Date.now }
 });
