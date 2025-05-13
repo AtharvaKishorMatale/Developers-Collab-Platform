@@ -1,23 +1,17 @@
-import ProjectList from "./ProjectList"
-import React, { useState } from 'react';
-import MainLayout from '../layouts/MainLayout';
-import { 
-  Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle 
-} from '../group/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../group/ui/tabs';
-import { 
-  Plus, UserPlus, Users, MessageSquare
-} from 'lucide-react';
-import { useToast } from '../hooks/use-toast';
-import ProjectPostList from '../group/ProjectPostList';
-import TeamRequestsList from '../group/TeamRequestsList';
-import MyTeamsList from '../group/MyTeamsList';
-import PostProjectDialog from '../group/PostProjectDialog';
+import ProjectList from "./ProjectList";
+import React, { useState } from "react";
+import MainLayout from "../layouts/MainLayout";
+import { Plus, UserPlus, Users } from "lucide-react";
+import { useToast } from "../hooks/use-toast";
+import ProjectPostList from "../group/ProjectPostList";
+import TeamRequestsList from "../group/TeamRequestsList";
+import MyTeamsList from "../group/MyTeamsList";
+import PostProjectDialog from "../group/PostProjectDialog";
 
 const Collaboration = () => {
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('projects');
+  const [activeTab, setActiveTab] = useState("projects");
 
   const handlePostProject = () => {
     setIsDialogOpen(true);
@@ -33,47 +27,55 @@ const Collaboration = () => {
               Find projects to join or post your own to find teammates
             </p>
           </div>
-          
+
           <div className="flex items-center gap-2">
-            {/* Replacing custom Button with a simpler HTML button */}
-            <button onClick={handlePostProject} className="btn">
-              <Plus className="h-4 w-4 mr-2" />
+            <button
+              onClick={handlePostProject}
+              className="bg-primary text-white px-4 py-2 rounded-md flex items-center gap-2 hover:opacity-90"
+            >
+              <Plus className="h-4 w-4" />
               Post Project
             </button>
           </div>
         </div>
-        
-        <Tabs defaultValue="projects" value={activeTab} onValueChange={setActiveTab}>
-          <div className="flex justify-between items-center">
-            <TabsList>
-              <TabsTrigger value="projects" className="flex items-center gap-1">
-                <Plus className="h-4 w-4" />
-                <span>Open Projects</span>
-              </TabsTrigger>
-              <TabsTrigger value="requests" className="flex items-center gap-1">
-                <UserPlus className="h-4 w-4" />
-                <span>My Requests</span>
-              </TabsTrigger>
-              <TabsTrigger value="teams" className="flex items-center gap-1">
-                <Users className="h-4 w-4" />
-                <span>My Teams</span>
-              </TabsTrigger>
-            </TabsList>
-          </div>
-          
-          <TabsContent value="projects" className="mt-6">
-            {/* <ProjectPostList /> */}
-            <ProjectList/>
-          </TabsContent>
-          
-          <TabsContent value="requests" className="mt-6">
-            <TeamRequestsList />
-          </TabsContent>
-          
-          <TabsContent value="teams" className="mt-6">
-            <MyTeamsList />
-          </TabsContent>
-        </Tabs>
+
+        {/* Simplified Tab Buttons */}
+        <div className="flex gap-4 border-b pb-2">
+          <button
+            onClick={() => setActiveTab("projects")}
+            className={`flex items-center gap-1 px-4 py-2 rounded-md ${
+              activeTab === "projects" ? "bg-primary text-white" : "text-muted"
+            }`}
+          >
+            <Plus className="h-4 w-4" />
+            Open Projects
+          </button>
+          <button
+            onClick={() => setActiveTab("requests")}
+            className={`flex items-center gap-1 px-4 py-2 rounded-md ${
+              activeTab === "requests" ? "bg-primary text-white" : "text-muted"
+            }`}
+          >
+            <UserPlus className="h-4 w-4" />
+            My Requests
+          </button>
+          <button
+            onClick={() => setActiveTab("teams")}
+            className={`flex items-center gap-1 px-4 py-2 rounded-md ${
+              activeTab === "teams" ? "bg-primary text-white" : "text-muted"
+            }`}
+          >
+            <Users className="h-4 w-4" />
+            My Teams
+          </button>
+        </div>
+
+        {/* Render content based on activeTab */}
+        <div className="mt-6">
+          {activeTab === "projects" && <ProjectList />}
+          {activeTab === "requests" && <TeamRequestsList />}
+          {activeTab === "teams" && <MyTeamsList />}
+        </div>
       </div>
 
       <PostProjectDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />
