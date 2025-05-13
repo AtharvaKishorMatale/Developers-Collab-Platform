@@ -36,6 +36,7 @@ const TeamRequestsList = () => {
     const fetchTeamRequests = async () => {
       try {
         const response = await axios.get(`/api/notifications/sent/${'currentUserId'}`);
+        console.log(response);
         setRequests(response.data);
       } catch (error) {
         console.error('Error fetching team requests:', error);

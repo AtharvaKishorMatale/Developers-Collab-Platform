@@ -47,18 +47,19 @@ mongoose
 
 // Routes
 app.use("/api/auth", authRoutes);
+// app.use("/api/gemini",); 
 app.use("/api/user", userRoutes);
 app.use("/api/post", projectRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/messages", messageRoutes); // Messages API
 
-// Serve static frontend files from client/dist
-app.use(express.static(path.join(__dirname, "../client/dist")));
+// // Serve static frontend files from client/dist
+// app.use(express.static(path.join(__dirname, "../client/dist")));
 
-// Fallback for SPA routing
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
-});
+// // Fallback for SPA routing
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+// });
 
 // Start the server
 const PORT = process.env.PORT || 5000;
