@@ -26,4 +26,4 @@ Hosting: Render/Vercel (Frontend), Railway (Backend), MongoDB Atlas (DB)
 
 ### Clone the Repo
 ```bash
-git clone https://github.com/Arnav-Panchal/Developers-Collab-Platform/
+git clone https://github.com/Arnav-Panchal/Developers-Collab-Platform.git
