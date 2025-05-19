@@ -24,14 +24,14 @@ export default defineConfig({
         target: 'https://api.github.com',
         changeOrigin: true,
         secure: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        // rewrite: (path) => path.replace(/^\/api/, ''),
       },
 
       '/user/repos': {
         target: 'https://api.github.com',
         changeOrigin: true,
         secure: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        // rewrite: (path) => path.replace(/^\/api/, ''),
       },
       
 
@@ -40,12 +40,16 @@ export default defineConfig({
         target: 'https://api.github.com',
         changeOrigin: true,  // To prevent host header issues
         secure: true,        // Use HTTPS
-        rewrite: (path) => path.replace(/^\/api/, ''),  // Remove `/api` prefix
+        // rewrite: (path) => path.replace(/^\/api/, ''),  // Remove `/api` prefix
       },
       '/api': {
         target: 'https://developers-collab-platform-1.onrender.com',
         secure: false,
       },
+      // '/api': {
+      //   target: 'http://localhost:5000',
+      //   secure: false,
+      // },
     },
   },
   plugins: [react()],

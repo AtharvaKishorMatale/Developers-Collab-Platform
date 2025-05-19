@@ -1,11 +1,12 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from 'cors';
 import path from "path";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import passport from "passport";
-
+import githubAuthRoutes from "./routes/github.routes.js";
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
 import projectRoutes from "./routes/post.route.js";
@@ -17,9 +18,19 @@ dotenv.config();
 const app = express();
 const __dirname = path.resolve();
 
-// Middleware
 app.use(express.json());
 app.use(cookieParser());
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://developers-collab-platform-1.onrender.com', // Optional if frontend is deployed
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+
 
 // Set up session for passport
 app.use(
@@ -50,6 +61,7 @@ app.get('/', (req, res) => {
 });
 // Routes
 app.use("/api/auth", authRoutes);
+app.use('/api/auth/github', githubAuthRoutes);
 // app.use("/api/gemini",); 
 app.use("/api/user", userRoutes);
 app.use("/api/post", projectRoutes);
