@@ -1,11 +1,12 @@
 import axios from "axios"
 
 let result=null;
-import dotenv from 'dotenv';
-dotenv.config();
 
-const clientId = process.env.GITHUB_CLIENT_ID;
-const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+
+
+// Use REACT_APP_ prefix for Create React App environment variables
+const clientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
+const clientSecret = process.env.REACT_APP_GITHUB_CLIENT_SECRET;
 async function getAccessToken() {
 
   
