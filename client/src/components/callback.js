@@ -2,6 +2,11 @@ import axios from "axios"
 
 let result=null;
 
+
+
+// Use REACT_APP_ prefix for Create React App environment variables
+const clientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
+const clientSecret = process.env.REACT_APP_GITHUB_CLIENT_SECRET;
 async function getAccessToken() {
 
   
@@ -12,8 +17,8 @@ async function getAccessToken() {
       const res = await axios.post(
       "/login/oauth/access_token",
       {
-        client_id:'Ov23ligMkUtaG7iY7vZc',
-        client_secret:'b412803b8ed256788262fd66d67149ccdb188d7a',
+        client_id:clientId,
+        client_secret : clientSecret,
         code:code
       }, {
         headers: {
