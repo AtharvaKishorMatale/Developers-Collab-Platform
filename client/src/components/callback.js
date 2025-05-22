@@ -5,35 +5,30 @@ let result=null;
 
 
 // Use REACT_APP_ prefix for Create React App environment variables
-const clientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
-const clientSecret = process.env.REACT_APP_GITHUB_CLIENT_SECRET;
+const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
+const clientSecret = import.meta.env.VITE_GITHUB_CLIENT_SECRET;
 async function getAccessToken() {
+  const code = new URLSearchParams(window.location.search).get('code');
+  if (!code) return;
 
-  
-    console.log("in")
-    const code = new URLSearchParams(window.location.search).get('code')
-    console.log(code)
+  try {
+    const res = await fetch('/api/github/exchange-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ code }),
+    });
 
-      const res = await axios.post(
-      "/login/oauth/access_token",
-      {
-        client_id:clientId,
-        client_secret : clientSecret,
-        code:code
-      }, {
-        headers: {
-          Accept: 'application/json',
-        },
-      }
-      
-    )
- 
-    const access_token = new URLSearchParams(res.data).get('access_token')
-  console.log(access_token);
-  
+    if (!res.ok) throw new Error('Failed to fetch token');
 
-    return access_token
-    
+    const data = await res.json();
+    console.log("Access Token:", data.access_token);
+
+    return data.access_token;
+  } catch (err) {
+    console.error('Error:', err.message);
+  }
 }
 
 async function getUserData(access_token) {
