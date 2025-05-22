@@ -61,7 +61,7 @@ app.get('/', (req, res) => {
 });
 // Routes
 app.use("/api/auth", authRoutes);
-app.use('/api/auth/github', githubAuthRoutes);
+app.use('/api/github/exchange-token', githubAuthRoutes);
 // app.use("/api/gemini",); 
 app.use("/api/user", userRoutes);
 app.use("/api/post", projectRoutes);
