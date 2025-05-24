@@ -42,14 +42,14 @@ export default defineConfig({
         secure: true,        // Use HTTPS
         // rewrite: (path) => path.replace(/^\/api/, ''),  // Remove `/api` prefix
       },
-      // '/api': {
-      //   target: 'https://developers-collab-platform-1.onrender.com',
-      //   secure: false,
-      // },
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://developers-collab-platform-1.onrender.com',
         secure: false,
       },
+      // '/api': {
+      //   target: 'http://localhost:5000',
+      //   secure: false,
+      // },
     },
   },
   plugins: [react()],
