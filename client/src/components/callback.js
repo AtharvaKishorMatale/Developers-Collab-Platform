@@ -2,11 +2,6 @@ import axios from "axios"
 
 let result=null;
 
-
-
-// Use REACT_APP_ prefix for Create React App environment variables
-const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
-const clientSecret = import.meta.env.VITE_GITHUB_CLIENT_SECRET;
 async function getAccessToken() {
   const code = new URLSearchParams(window.location.search).get('code');
   if (!code) return;
