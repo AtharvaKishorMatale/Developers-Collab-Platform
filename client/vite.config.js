@@ -46,6 +46,10 @@ export default defineConfig({
         target: 'https://developers-collab-platform-1.onrender.com/',
         secure: false,
       },
+      // '/api': {
+      //   target: 'http://localhost:5000',
+      //   secure: false,
+      // },
     },
   },
   plugins: [react()],
