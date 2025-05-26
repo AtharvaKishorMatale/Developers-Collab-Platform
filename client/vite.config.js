@@ -43,7 +43,7 @@ export default defineConfig({
         // rewrite: (path) => path.replace(/^\/api/, ''),  // Remove `/api` prefix
       },
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://developers-collab-platform-1.onrender.com/',
         secure: false,
       },
     },
