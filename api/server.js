@@ -9,6 +9,7 @@ import passport from "passport";
 import githubAuthRoutes from "./routes/github.routes.js";
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
+import projectsdisplay from "./routes/projectRoutes.js";
 import projectRoutes from "./routes/post.route.js";
 import notificationRoutes from "./routes/notification.route.js"
 import messageRoutes from "./routes/message.route.js"; // Import messages route
@@ -63,6 +64,7 @@ app.get('/', (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use('/api/github', githubAuthRoutes);
 // app.use("/api/gemini",); 
+app.use('/api/projects', projectsdisplay);
 app.use("/api/user", userRoutes);
 app.use("/api/post", projectRoutes);
 app.use("/api/notifications", notificationRoutes);

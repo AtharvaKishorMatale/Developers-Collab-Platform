@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import ProjectCards from '../components/displayprojects';
 // import Summary from "./Summary"
 
 const Dashboard = () => {
@@ -6,7 +7,7 @@ const Dashboard = () => {
   const { currentUser } = useSelector((state) => state.user);
 
   return (
-    <div className="max-w-lg mx-auto p-5 w-full">
+    <div className=" mx-auto p-5 w-full">
       {/* <Summary/> */}
       {/* User Info Section */}
       <div className="bg-gray-400 p-5 rounded-lg shadow-md mb-5">
@@ -14,9 +15,9 @@ const Dashboard = () => {
         <p className="text-gray-700"><strong>Bio:</strong> {currentUser.bio}</p>
         <p className="text-gray-700"><strong>Workplace:</strong> {currentUser.workplace}</p>
       </div>
-
+      <ProjectCards/>
       {/* Projects Section */}
-      <div className="bg-gray-400 p-5 rounded-lg shadow-md">
+      {/* <div className="bg-gray-400 p-5 rounded-lg shadow-md">
         <h3 className="text-xl font-bold mb-4">Projects</h3>
         <div className="space-y-4">
           {currentUser.projects && currentUser.projects.length > 0 ? (
@@ -40,8 +41,8 @@ const Dashboard = () => {
           ) : (
             <p className="text-gray-600">No projects to display.</p>
           )}
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
     </div>
   );
 };
