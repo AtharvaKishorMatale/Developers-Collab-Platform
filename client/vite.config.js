@@ -12,13 +12,13 @@ export default defineConfig({
         target: 'https://github.com',
         changeOrigin: true,
         secure: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        // rewrite: (path) => path.replace(/^\/api/, ''),
       },
       '/flask': {
         target: 'http://127.0.0.1:5000',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        // rewrite: (path) => path.replace(/^\/api/, ''),
       },
       '/user': {
         target: 'https://api.github.com',
@@ -43,7 +43,7 @@ export default defineConfig({
         // rewrite: (path) => path.replace(/^\/api/, ''),  // Remove `/api` prefix
       },
       '/api': {
-        target: 'https://developers-collab-platform-1.onrender.com',
+        target: 'https://developers-collab-platform-1.onrender.com/',
         secure: false,
       },
       // '/api': {
