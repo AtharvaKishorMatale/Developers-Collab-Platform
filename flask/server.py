@@ -2,20 +2,27 @@ from flask import Flask, jsonify
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 from bson import ObjectId
+from dotenv import load_dotenv
+import os
 
-
+# Load .env file
+load_dotenv()
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb+srv://arnavpanchal27:1DSmE1BNxAZd0etn@cluster0.g6gbv.mongodb.net/test?retryWrites=true&w=majority"
+app.config["MONGO_URI"] = os.getenv("MONGO_URI")
+
+# Initialize Mongo
 mongo = PyMongo(app)
 CORS(app)
 
+# Check MongoDB connection
 try:
-    mongo.db.command("ping") 
-    print("MongoDB is connected successfully!")
+    mongo.db.command("ping")
+    print("✅ MongoDB is connected successfully!")
 except Exception as e:
-    print(f"MongoDB connection failed: {e}")
+    print(f"❌ MongoDB connection failed: {e}")
 
+# Similarity calculator
 def calculate_jaccard_similarity(set1, set2):
     intersection = len(set1.intersection(set2))
     union = len(set1.union(set2))
@@ -25,15 +32,13 @@ def calculate_jaccard_similarity(set1, set2):
 def home():
     return jsonify({"message": "API is running!"})
 
+# Recommend projects for a user
 @app.route('/flask/projects/recommendations/<user_id>', methods=['GET'])
 def project_recommendations(user_id):
-    
     try:
         user = mongo.db.users.find_one({"_id": ObjectId(user_id)})
         if not user:
             return jsonify({"error": "User not found"}), 404
-        
-        print("running in api 2")
 
         user_projects = mongo.db.userProjects.find({"email": user["email"]})
         user_skills = set(user.get("skills", []))
@@ -66,20 +71,15 @@ def project_recommendations(user_id):
                     "slug": project.get("slug")
                 })
 
-                print("running in api 3")
         return jsonify(project_details)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
 
-
+# Get all posts by username
 @app.route('/flask/posts/user/<ownerUsername>', methods=['GET'])
 def get_user_posts(ownerUsername):
-    posts = list(mongo.db.posts.find({"ownerUsername": ownerUsername}))  # Query by username
-
-    print("running flask")
-
+    posts = list(mongo.db.posts.find({"ownerUsername": ownerUsername}))
     formatted_posts = [
         {
             "id": str(post["_id"]),
@@ -90,20 +90,17 @@ def get_user_posts(ownerUsername):
         }
         for post in posts
     ]
-
-    print(f"Posts found for ownerUsername {ownerUsername}:", formatted_posts)  # Debugging log
     return jsonify(formatted_posts)
 
-
-
-@app.route('/flask/users/recommendations/post/<post_id>')  # Changed route
+# Recommend users for a post
+@app.route('/flask/users/recommendations/post/<post_id>')
 def user_recommendations(post_id):
     try:
-        post = mongo.db.posts.find_one({"_id": ObjectId(post_id)})  # Changed to post
+        post = mongo.db.posts.find_one({"_id": ObjectId(post_id)})
         if not post:
             return jsonify({"error": "Post not found"}), 404
 
-        post_skills = set(post.get("skills", []) + post.get("technologies", [])) # Changed to post
+        post_skills = set(post.get("skills", []) + post.get("technologies", []))
         all_users = list(mongo.db.users.find())
         recommendations = []
         for user in all_users:
@@ -113,7 +110,7 @@ def user_recommendations(post_id):
                 if proj.get("language"):
                     user_skills.add(proj.get("language"))
 
-            similarity = calculate_jaccard_similarity(user_skills, post_skills) # Changed to post
+            similarity = calculate_jaccard_similarity(user_skills, post_skills)
             recommendations.append({"user_id": str(user["_id"]), "similarity": similarity})
 
         recommendations.sort(key=lambda x: x["similarity"], reverse=True)
@@ -130,6 +127,7 @@ def user_recommendations(post_id):
                     "email": user.get("email"),
                     "skills": user.get("skills")
                 })
+
         return jsonify(user_details)
 
     except Exception as e:
