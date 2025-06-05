@@ -24,6 +24,8 @@ export default function Header() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    console.log("Search term submitted:", searchTerm)
     const urlParams = new URLSearchParams(location.search)
     urlParams.set("searchTerm", searchTerm)
     const searchQuery = urlParams.toString()
