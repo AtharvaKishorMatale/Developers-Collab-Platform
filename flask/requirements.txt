@@ -1,9 +1,0 @@
-flask
-gunicorn
-scikit-learn
-pandas
-flask-oauthlib
-flask-sqlalchemy
-flask_pymongo
-flask-cors
-dnspython
