@@ -19,74 +19,59 @@ const ChatRoomList = ({ currentUser, onSelectRoom }) => {
   }, [currentUser]);
 
   const fetchChatRooms = async () => {
-    console.log("Fetching chat rooms for user:", currentUser?.id);
-    try {
-      setLoading(true);
-      setError(null);
+  console.log("Fetching chat rooms for user:", currentUser?.id);
+  try {
+    setLoading(true);
+    setError(null);
 
-      // Try multiple endpoints to get all rooms user is part of
-      const endpoints = [
-        `/api/chat/rooms/owner/${currentUser.id}`, // Rooms user owns
-        `/api/chat/rooms/member/${currentUser.id}`, // Rooms user is member of
-        `/api/chat/rooms/user/${currentUser.id}`,   // Alternative endpoint
-        `/api/chat/rooms` // Get all rooms and filter client-side if needed
-      ];
+    const endpoints = [
+      `/api/chat/rooms/owner/${currentUser.id}`,  // Rooms user owns
+      `/api/chat/rooms/member/${currentUser.id}`, // Rooms user is member of
+      `/api/chat/rooms/user/${currentUser.id}`,   // Alternative endpoint
+      `/api/chat/rooms`                           // All rooms (can filter client-side)
+    ];
 
-      let allRooms = [];
-      let successfulFetch = false;
+    // Fetch all endpoints in parallel using Promise.allSettled to get all results regardless of failures
+    const results = await Promise.allSettled(
+      endpoints.map(endpoint => axios.get(endpoint))
+    );
 
-      // Try each endpoint until we get a successful response
-      for (const endpoint of endpoints) {
-        try {
-          console.log(`Trying endpoint: ${endpoint}`);
-          const response = await axios.get(endpoint);
-          
-          if (response.data && Array.isArray(response.data)) {
-            allRooms = response.data;
-            successfulFetch = true;
-            console.log(`Successfully fetched ${allRooms.length} rooms from ${endpoint}`);
-            break;
-          }
-        } catch (endpointError) {
-          console.log(`Endpoint ${endpoint} failed:`, endpointError.response?.status);
-          continue;
-        }
+    // Extract data from successful requests
+    let allRooms = [];
+    results.forEach(result => {
+      if (result.status === 'fulfilled' && Array.isArray(result.value.data)) {
+        allRooms = allRooms.concat(result.value.data);
       }
+    });
 
-      if (!successfulFetch) {
-        throw new Error('All API endpoints failed');
-      }
-
-      // Filter out duplicate rooms and ensure user has access
-      const uniqueRooms = allRooms.filter((room, index, self) => 
-        index === self.findIndex(r => r._id === room._id)
-      );
-
-      // Additional filtering based on user membership
-      const userRooms = uniqueRooms.filter(room => 
-        room.ownerId === currentUser.id || 
-        (room.members && room.members.some(member => 
-          member.userId === currentUser.id || member._id === currentUser.id
-        ))
-      );
-
-      console.log(`Filtered to ${userRooms.length} user rooms:`, userRooms);
-      setChatRooms(userRooms);
-
-    } catch (error) {
-      console.error('Error fetching chat rooms:', error);
-      setError(`Failed to load chat rooms: ${error.message}`);
-      
-      // Show more specific error information
-      if (error.response) {
-        console.error('Response status:', error.response.status);
-        console.error('Response data:', error.response.data);
-        setError(`Server error: ${error.response.status} - ${error.response.data?.message || 'Unknown error'}`);
-      }
-    } finally {
-      setLoading(false);
+    if (allRooms.length === 0) {
+      throw new Error('No rooms fetched from any endpoint');
     }
-  };
+
+    // Remove duplicate rooms by _id
+    const uniqueRooms = allRooms.filter(
+      (room, index, self) => index === self.findIndex(r => r._id === room._id)
+    );
+
+    // Filter rooms where user is owner or member
+    const userRooms = uniqueRooms.filter(room =>
+      room.ownerId === currentUser.id ||
+      (room.members && room.members.some(member =>
+        member.userId === currentUser.id || member._id === currentUser.id
+      ))
+    );
+
+    console.log(`Fetched and combined rooms: ${userRooms.length}`);
+    setChatRooms(userRooms);
+
+  } catch (error) {
+    console.error('Error fetching chat rooms:', error);
+    setError(`Failed to load chat rooms: ${error.message}`);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   // Filter rooms based on active tab
   const getFilteredRooms = () => {
