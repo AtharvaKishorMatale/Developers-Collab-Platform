@@ -1,36 +1,38 @@
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import {  Avatar } from 'flowbite-react';
+import { Avatar } from 'flowbite-react';
 import axios from 'axios';
-import { toast } from 'react-toastify'; 
-// import 'react-toastify/dist/ReactToastify.css';
-
+import { toast } from 'react-toastify';
 
 export default function PostCard({ post }) {
-
   const { currentUser } = useSelector((state) => state.user);
- 
 
-  const handleJoinRequest = async () => {
+    const handleCreatePost = async (postData) => {
     try {
-      // Send a request to the backend to notify the post owner
-      await axios.post('/api/notifications/sendno', {
-        recipientId: post.ownerId, // Assuming `post` has an `ownerId` field representing the post owner's ID
-        senderId: currentUser.id, // Current user's ID
-        postId: post._id, // ID of the post being requested to join
-        message: `${currentUser.username} has requested to join your project: ${post.title}`
+      // Create the post first
+      const postResponse = await axios.post('/api/post/create', postData);
+      const newPost = postResponse.data;
+
+      // Create chat room for the post
+      await axios.post('/api/chat/create-room', {
+        postId: newPost._id,
+        title: newPost.title,
+        ownerId: currentUser.id,
+        ownerUsername: currentUser.username,
+        ownerPic: currentUser.pic
       });
-      
-      // Show success message
-      toast.success('Join request sent successfully!');
-      // console.log(post.ownerId);
+
+      toast.success('Project and chat room created successfully!');
+      // Redirect or update state as needed
     } catch (error) {
-      console.error('Error sending join request:', error);
-      toast.error('Failed to send join request. Please try again.');
+      console.error('Error creating post:', error);
+      toast.error('Failed to create project');
     }
   };
+
+  
   return (
-    <div className='group relative w-full border border-teal-500 hover:border-2 h-[350px] overflow-hidden rounded-lg sm:w-[430px] transition-all'>
+    <div className='group relative w-full border border-teal-500 hover:border-2 h-[400px] overflow-hidden rounded-lg sm:w-[430px] transition-all'>
       <div className='p-3 flex flex-col gap-2'>
         <p className='text-lg font-semibold line-clamp-2'>{post.title}</p>
         <span className='italic text-sm'>{post.category}</span>
@@ -40,16 +42,34 @@ export default function PostCard({ post }) {
         <p className='text-sm'>Responsibilities: {post.responsibilities}</p>
         <p className='text-sm'>Start Date: {new Date(post.startDate).toLocaleDateString()}</p>
         <p className='text-sm'>End Date: {new Date(post.endDate).toLocaleDateString()}</p>
-        <p className='text-sm rounded w-20px h-20px' >{post.ownerUsername}</p> {/* Display current user ID */}
-        <Avatar alt="user"
-                img={post.ownerPic}
-                rounded
-                style={{ width: '20px', height: '20px' }} />
+        <div className='flex items-center gap-2'>
+          <Avatar 
+            alt="user"
+            img={post.ownerPic}
+            rounded
+            size="sm"
+          />
+          <p className='text-sm'>{post.ownerUsername}</p>
+        </div>
+        
+        {/* Chat Room Link - Only show if user is the owner or a member */}
+        {currentUser.id === post.ownerId && (
+          <Link 
+            to={`/chat/${post._id}`}
+            className='text-blue-500 hover:text-blue-700 text-sm underline'
+          >
+            Enter Chat Room
+          </Link>
+        )}
+        
         <button
-          onClick={handleJoinRequest}
-          className='z-10 group-hover:bottom-0 absolute bottom-[-200px] left-0 right-0 border border-teal-500 text-teal-500 hover:bg-teal-500 hover:text-white transition-all duration-300 text-center py-2 rounded-md !rounded-tl-none m-2'
+          onClick={handleCreatePost}
+          disabled={currentUser.id === post.ownerId}
+          className={`z-10 group-hover:bottom-0 absolute bottom-[-200px] left-0 right-0 border border-teal-500 text-teal-500 hover:bg-teal-500 hover:text-white transition-all duration-300 text-center py-2 rounded-md !rounded-tl-none m-2 ${
+            currentUser.id === post.ownerId ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
         >
-          Join Request
+          {currentUser.id === post.ownerId ? 'Your Project' : 'Join Request'}
         </button>
       </div>
     </div>

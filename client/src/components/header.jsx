@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { FaMoon, FaSun } from "react-icons/fa"
 import { toggleTheme } from "../redux/theme/themeSlice"
 import { signoutSuccess } from "../redux/user/userSlice"
-import Notification from "./notification"
+import { Bell } from 'lucide-react';
 
 export default function Header() {
   const location = useLocation()
@@ -56,7 +56,7 @@ export default function Header() {
         </form>
         <nav className="flex items-center space-x-4">
         <Link
-            to="/Chat"
+            to="/chat"
             className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400"
           >
             Chats
@@ -108,7 +108,13 @@ export default function Header() {
           </button>
           {currentUser && (
             <div className="relative">
-              <Notification currentUserId={currentUser._id} />
+              <Link 
+        to="/notifications" 
+        className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
+      >
+        <Bell className="h-5 w-5" />
+        Notifications
+      </Link>
             </div>
           )}
         </nav>
