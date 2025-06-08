@@ -9,8 +9,9 @@ import Header from './components/header';
 import PrivateRoute from './components/PrivateRoute';
 import Dashboard from './pages/Dashboard';
 import Callback from './components/Callback.jsx';
-import Chat from "./components/Chat";
-
+// import Chat from "./components/Chat";
+import NotificationComponent from './components/notifications';
+import Room from './components/room';
 
 
 
@@ -22,8 +23,11 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path ='/Discover' element={<Discover/>}/>
-        <Route path ='/Chat' element={<Chat groupId="DevConnect" user="Arnav-Panchal"/>}/>
+        {/* <Route path ='/Chat' element={<Chat groupId="DevConnect" user="Arnav-Panchal"/>}/> */}
         <Route path ='/callback' element={<Callback/>}/>
+        <Route path="/chat" element={<Room/>} />
+        <Route path="/notifications" element={<NotificationComponent />} />
+        {/* <Route path="/chat/:postId" element={<ChatRoom  />} /> */}
         <Route path='/sign-in' element={<SignIn/>}/>
         <Route path='/sign-up' element={<SignUp/>}/>
         <Route element={<PrivateRoute/>}>
