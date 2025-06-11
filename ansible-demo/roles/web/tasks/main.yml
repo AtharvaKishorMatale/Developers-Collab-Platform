@@ -1,0 +1,35 @@
+
+- name: Update APT packages
+  apt:
+    update_cache: yes
+
+- name: Install Python3, pip, and Git
+  apt:
+    name:
+      - python3
+      - python3-pip
+      - git
+    state: present
+
+- name: Install Flask and gunicorn
+  pip:
+    name:
+      - flask
+      - gunicorn
+
+- name: Clone DevelopersCollabPlatform repo
+  git:
+    repo: 'git@github.com:AtharvaKishorMatale/DevelopersCollabPlatform.git'
+    dest: /home/ubuntu/devapp
+    version: main
+
+- name: Install app dependencies
+  pip:
+    requirements: /home/ubuntu/devapp/api/requirements.txt
+
+- name: Run Flask app via Gunicorn
+  shell: |
+    nohup gunicorn -b 0.0.0.0:80 app:app &
+  args:
+    chdir: /home/ubuntu/devapp/api
+    executable: /bin/bash

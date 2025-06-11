@@ -1,0 +1,9 @@
+
+- name: Configure EC2 instance for DevelopersCollabPlatform
+  hosts: dev
+  become: yes
+  vars:
+    app_dir: /home/ubuntu/devapp
+  roles:
+    - web
+
